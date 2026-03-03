@@ -59,7 +59,7 @@ body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charco
 .fs-topbar__sync span{color:var(--green);}
 .fs-alert-badge{background:var(--red);color:#fff;border-radius:20px;padding:3px 11px;font-size:0.71rem;font-weight:500;animation:pulse 2.5s ease-in-out infinite;cursor:pointer;}
 .fs-page{padding:34px 36px;flex:1;}
-.fs-page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:30px;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border);padding-bottom:22px;}
+.fs-page-header{display:flex;align-items:center;justify-content:center;margin-bottom:30px;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--border);padding-bottom:22px;}
 .fs-page-eyebrow{font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:7px;}
 .fs-page-title{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;line-height:1.05;}
 .fs-page-title em{color:var(--gold-dim);font-style:normal;}

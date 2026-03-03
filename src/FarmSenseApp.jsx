@@ -171,14 +171,95 @@ const SPRAY_WINDOWS = [
 // ═══════════════════════════════════════════════
 
 function Topbar({ page }) {
+    const [heatType, setHeatType] = useState("Temperature");
+
   return (
     <div className="fs-topbar">
-      <div className="fs-topbar__breadcrumb">
+      {/* <div className="fs-topbar__breadcrumb">
         <span className="fs-topbar__parent">FarmSense AI</span>
         <span className="fs-topbar__sep">›</span>
         <span className="fs-topbar__current">{page}</span>
-      </div>
+      </div> */}
+
+      <div className="fs-filter-group">
+          {["Temperature", "Humidity", "Wind"].map(t => (
+            <button key={t} className={`fs-filter-pill ${heatType === t ? "fs-filter-pill--active" : ""}`} onClick={() => setHeatType(t)}>{t}</button>
+          ))}
+        </div>
+
       <div className="fs-topbar__right">
+        <span className="fs-topbar__sync">IoT sync: <span>● Live</span></span>
+        <span className="fs-alert-badge">2 Alerts</span>
+      </div>
+    </div>
+  );
+}
+
+function TopbarDashboard({ page }) {
+
+  return (
+    <div className="fs-topbar" style={{ display: "flex", padding: "25px", marginBottom: "20px" }}>
+      {/* <div style={{ display: "flex", gap: 10, marginLeft: "auto" }}>
+          <button className="fs-btn fs-btn--primary">
+          <span style={{ width: 20, height: 20, background: "var(--gold)", borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: "var(--charcoal)", fontWeight: 900 }}>+</span>
+          Register New Batch
+        </button>
+        </div> */}
+
+        <div>
+          <button className="fs-btn fs-btn--gold">+ Register New Batch</button>
+        </div>
+        
+        <div className="fs-topbar__right">
+        <span className="fs-topbar__sync">IoT sync: <span>● Live</span></span>
+        <span className="fs-alert-badge">2 Alerts</span>
+      </div>
+    </div>
+  );
+}
+
+function TopbarSoilHealth({ page }) {
+
+  return (
+    <div className="fs-topbar" style={{ display: "flex", padding: "25px", marginBottom: "20px" }}>
+      <button className="fs-btn fs-btn--ghost"
+        >⬇ Export Report
+      </button>
+
+      <div className="fs-topbar__right">
+        <span className="fs-topbar__sync">IoT sync: <span>● Live</span></span>
+        <span className="fs-alert-badge">2 Alerts</span>
+      </div>
+    </div>
+  );
+}
+
+function TopbarDiseaseMap({ page }) {
+
+  return (
+    <div className="fs-topbar" style={{ display: "flex", padding: "25px", marginBottom: "20px" }}>
+      <div style={{ display: "flex", gap: 10 }}>
+          <button className="fs-btn fs-btn--ghost fs-btn--sm">⬇ Export Map</button>
+          <button className="fs-btn fs-btn--danger fs-btn--sm">🔔 Send Alert</button>
+        </div>
+
+        <div className="fs-topbar__right">
+        <span className="fs-topbar__sync">IoT sync: <span>● Live</span></span>
+        <span className="fs-alert-badge">2 Alerts</span>
+      </div>
+    </div>
+  );
+}
+
+function TopbarCropProfile({ page }) {
+
+  return (
+    <div className="fs-topbar" style={{ display: "flex", padding: "25px", marginBottom: "20px" }}>
+      <div style={{ display: "flex", gap: 10 }}>
+          <button className="fs-btn fs-btn--gold">+ New Profile</button>
+        </div>
+
+        <div className="fs-topbar__right">
         <span className="fs-topbar__sync">IoT sync: <span>● Live</span></span>
         <span className="fs-alert-badge">2 Alerts</span>
       </div>
@@ -312,11 +393,9 @@ function DashboardPage() {
           <h1 className="fs-page-title">Crop <em>Intelligence</em><br />Dashboard</h1>
           <p className="fs-page-sub">Monitoring {BATCHES.length} active batches · Last sensor sync 4 min ago</p>
         </div>
-        <button className="fs-btn fs-btn--primary">
-          <span style={{ width: 20, height: 20, background: "var(--gold)", borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: "var(--charcoal)", fontWeight: 900 }}>+</span>
-          Register New Batch
-        </button>
       </div>
+
+      <TopbarDashboard/>
 
       <div className="fs-stat-strip">
         <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Active Batches</div><div className="fs-stat-card__val">6</div><div className="fs-stat-card__meta">Vegetables &amp; Fruits</div><span className="fs-stat-tag fs-stat-tag--good">All updated</span></div>
@@ -386,7 +465,8 @@ function DashboardPage() {
 // ═══════════════════════════════════════════════
 
 function AtmospherePage() {
-  const [heatType, setHeatType] = useState("Temperature");
+      const [heatType, setHeatType] = useState("Temperature");
+
   return (
     <>
       <div className="fs-page-header">
@@ -395,14 +475,14 @@ function AtmospherePage() {
           <h1 className="fs-page-title">Atmosphere <em>Monitor</em></h1>
           <p className="fs-page-sub">Temperature, humidity, and wind across all farm blocks · Spray window guidance included</p>
         </div>
-        <div className="fs-filter-group">
-          {["Temperature", "Humidity", "Wind"].map(t => (
-            <button key={t} className={`fs-filter-pill ${heatType === t ? "fs-filter-pill--active" : ""}`} onClick={() => setHeatType(t)}>{t}</button>
-          ))}
-        </div>
+        
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden h-[350px] mb-10">
+              <Topbar />
+              <br />
+
+
+      <div className="bg-card rounded-xl border border-border overflow-hidden h-[350px] mt-10">
         <iframe
           src="https://www.openstreetmap.org/export/embed.html?bbox=116.00,5.90,116.20,6.10&layer=mapnik"
           className="w-full h-full border-0"
@@ -500,8 +580,9 @@ function SoilPage() {
           <h1 className="fs-page-title">Soil <em>Health</em></h1>
           <p className="fs-page-sub">Moisture, pH, and nutrient levels across all 6 active blocks</p>
         </div>
-        <button className="fs-btn fs-btn--ghost">⬇ Export Report</button>
       </div>
+
+            <TopbarSoilHealth/>
 
       <div className="fs-stat-strip">
         <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Farm Avg. Soil Score</div><div className="fs-stat-card__val">{avgScore}</div><div className="fs-stat-card__meta">Out of 100</div><span className="fs-stat-tag fs-stat-tag--warn">Needs work</span></div>
@@ -575,11 +656,9 @@ function DiseaseMapPage() {
           <h1 className="fs-page-title">Disease <em>Movement</em> Map</h1>
           <p className="fs-page-sub">Track spread vectors across all blocks · Use timeline to review historical movement</p>
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button className="fs-btn fs-btn--ghost fs-btn--sm">⬇ Export Map</button>
-          <button className="fs-btn fs-btn--danger fs-btn--sm">🔔 Send Alert</button>
-        </div>
       </div>
+
+      <TopbarDiseaseMap />
 
       <div className="fs-stat-strip">
         <div className="fs-stat-card fs-stat-card--red"><div className="fs-stat-card__label">Active Threats</div><div className="fs-stat-card__val fs-stat-card__val--danger">2</div><div className="fs-stat-card__meta">Spreading across blocks</div><span className="fs-stat-tag fs-stat-tag--danger">High risk</span></div>
@@ -671,8 +750,10 @@ function CropProfilesPage() {
           <h1 className="fs-page-title">Crop <em>Profiles</em></h1>
           <p className="fs-page-sub">Set your own target ranges per crop — AI will alert based on your thresholds, not generic defaults</p>
         </div>
-        <button className="fs-btn fs-btn--gold">+ New Profile</button>
       </div>
+
+          <TopbarCropProfile/>   
+
 
       <div className="fs-stat-strip">
         <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Active Profiles</div><div className="fs-stat-card__val">{CROP_PROFILES.length}</div><div className="fs-stat-card__meta">Custom Profile</div><span className="fs-stat-tag fs-stat-tag--good">All active</span></div>
@@ -865,7 +946,6 @@ export default function FarmSenseApp() {
 
       {/* CONTENT */}
       <div className="fs-content">
-        <Topbar page={activePage} />
         <div className="fs-page">
           {PAGE_COMPONENTS[activePage]}
         </div>
