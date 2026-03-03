@@ -319,7 +319,7 @@ function DashboardPage() {
       </div>
 
       <div className="fs-stat-strip">
-        <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Active Batches</div><div className="fs-stat-card__val">6</div><div className="fs-stat-card__meta">Vegetables &amp; Fruits</div><span className="fs-stat-tag fs-stat-tag--good">All registered</span></div>
+        <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Active Batches</div><div className="fs-stat-card__val">6</div><div className="fs-stat-card__meta">Vegetables &amp; Fruits</div><span className="fs-stat-tag fs-stat-tag--good">All updated</span></div>
         <div className="fs-stat-card fs-stat-card--red"><div className="fs-stat-card__label">Alerts</div><div className="fs-stat-card__val fs-stat-card__val--danger">{alertCount}</div><div className="fs-stat-card__meta">Requires attention</div><span className="fs-stat-tag fs-stat-tag--danger">Critical</span></div>
         <div className="fs-stat-card fs-stat-card--amber"><div className="fs-stat-card__label">Avg. Soil Moisture</div><div className="fs-stat-card__val fs-stat-card__val--warn">61%</div><div className="fs-stat-card__meta">Optimal 65–75%</div><span className="fs-stat-tag fs-stat-tag--warn">Low</span></div>
         <div className="fs-stat-card fs-stat-card--green"><div className="fs-stat-card__label">Healthy Batches</div><div className="fs-stat-card__val">4</div><div className="fs-stat-card__meta">No issues detected</div><span className="fs-stat-tag fs-stat-tag--good">On track</span></div>
@@ -704,7 +704,7 @@ function CropProfilesPage() {
                           <span className="fs-recipe-param__val">{param.min}–{param.max}{param.unit}</span>
                         </div>
                         <div className="fs-recipe-param__bar">
-                          <div className="fs-recipe-param__fill" style={{ left: `${param.min * 0.7}%`, width: `${(param.max - param.min) * 0.7}%` }} />
+                          <div style={{ left: `${param.min * 0.7}%`, width: `${(param.max - param.min) * 0.7}%` }} />
                         </div>
                       </div>
                     ))}

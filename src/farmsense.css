@@ -85,7 +85,7 @@ body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charco
 .fs-stat-tag--danger{background:rgba(192,57,43,0.10);color:var(--red);}
 .fs-stat-tag--blue{background:rgba(41,128,185,0.10);color:var(--blue);}
 .fs-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);animation:fadeUp 0.4s ease both;}
-.fs-card__header{padding:17px 22px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.fs-card__header{padding:17px 22px 13px;border-bottom:1px solid var(--border);}
 .fs-card__title{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;}
 .fs-card__sub{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);margin-top:2px;}
 .fs-card__body{padding:18px 22px;}
