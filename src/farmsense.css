@@ -49,7 +49,7 @@ body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charco
 .fs-sidebar__user-name{font-size:0.78rem;color:rgba(255,255,255,0.7);font-weight:500;}
 .fs-sidebar__user-role{font-size:0.65rem;color:rgba(255,255,255,0.28);font-family:'DM Mono',monospace;}
 .fs-content{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;}
-.fs-topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 36px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);}
+.fs-topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 36px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);border-radius: 10px;}
 .fs-topbar__breadcrumb{display:flex;align-items:center;gap:8px;}
 .fs-topbar__parent{font-size:0.77rem;color:var(--text-dim);}
 .fs-topbar__sep{color:var(--text-dim);font-size:0.7rem;}
