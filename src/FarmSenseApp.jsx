@@ -174,7 +174,7 @@ function Topbar({ page }) {
   return (
     <div className="fs-topbar">
       <div className="fs-topbar__breadcrumb">
-        <span className="fs-topbar__parent">FarmSense AI</span>
+        <span className="fs-topbar__parent">AI Farm</span>
         <span className="fs-topbar__sep">›</span>
         <span className="fs-topbar__current">{page}</span>
       </div>
