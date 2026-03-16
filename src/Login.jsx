@@ -18,13 +18,14 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    e.preventDefault();
-    if (email === "admin@aifarm.com" && password === "admin123") {
-      localStorage.setItem("aifarm-auth", "true");
-      navigate("/dashboard");
-    } else {
-      setError("Invalid email or password");
-    }
+    navigate("/dashboard");
+    // e.preventDefault();
+    // if (email === "admin@aifarm.com" && password === "admin123") {
+    //   localStorage.setItem("aifarm-auth", "true");
+    //   navigate("/dashboard");
+    // } else {
+    //   setError("Invalid email or password");
+    // }
   };
 
   // const handleSubmit = (e) => {
@@ -110,7 +111,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   style={styles.input}
-                  required
+
                 />
               </div>
             </div>
@@ -129,7 +130,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   style={styles.input}
-                  required
+
                 />
                 <button
                   type="button"
