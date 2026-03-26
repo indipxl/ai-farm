@@ -1,14 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from dateutil import parser
-from uuid import uuid4
-from supabase import create_client, Client
 import os
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials, firestore
 import uvicorn
 
 app = FastAPI(title="Ai Farm API", version="1.0.0")
@@ -35,42 +35,45 @@ class BatchResponse(BaseModel):
     planted: str  # Formatted
     notes: Optional[str] = None
 
-# Supabase client
+# Firebase Firestore client
 load_dotenv()
-supabase_url = os.getenv("SUPABASE_URL")
-supabase_key = os.getenv("SUPABASE_KEY")
-if not supabase_url or not supabase_key:
-    print("WARNING: Missing SUPABASE_URL or SUPABASE_KEY - API will fail without backend/.env")
-supabase = create_client(supabase_url, supabase_key)
+project_id = os.getenv("FIREBASE_PROJECT_ID")
+service_account_path = "gaia-sabah-c3-group2-aifarm-02d42c9eeb6a.json"
+
+if not project_id:
+    print("WARNING: Missing FIREBASE_PROJECT_ID - API will fail without backend/.env")
+
+if not os.path.exists(service_account_path):
+    print("WARNING: Missing gaia-sabah-c3-group2-aifarm-02d42c9eeb6a.json - API will fail")
+
+cred = credentials.Certificate(service_account_path)
+firebase_admin.initialize_app(cred, {"projectId": project_id})
+db = firestore.client()
 
 @app.post("/api/register-batch", response_model=BatchResponse)
 async def register_batch(batch: BatchCreate):
     try:
-        planted_date = parser.parse(batch.planted)
+        planted_date = parser.parse(batch.planted).date()
+        planted_str = planted_date.strftime("%d %b %Y")
     except:
         raise HTTPException(400, "Invalid date. Use YYYY-MM-DD")
     
     try:
-        response = supabase.table("batches").insert({
+        doc_ref = db.collection("batches").add({
             "crop": batch.crop,
             "location": batch.location,
             "planted": planted_date.isoformat(),
-            "notes": batch.notes
-        }).execute()
+            "notes": batch.notes,
+            "created_at": firestore.SERVER_TIMESTAMP
+        })
         
-        data = response.data
-        if not data:
-            raise HTTPException(500, "Failed to create batch")
-        
-        inserted = data[0]
-        formatted_planted = planted_date.strftime("%d %b %Y")
-        
+        doc_id = doc_ref[1].id
         return BatchResponse(
-            id=str(inserted["id"])[:10].upper() if inserted["id"] else "LOCAL",
-            crop=inserted["crop"],
-            location=inserted["location"],
-            planted=formatted_planted,
-            notes=inserted["notes"]
+            id=doc_id[:10].upper(),
+            crop=batch.crop,
+            location=batch.location,
+            planted=planted_str,
+            notes=batch.notes
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
@@ -78,21 +81,22 @@ async def register_batch(batch: BatchCreate):
 @app.get("/api/batches")
 async def get_batches():
     try:
-        response = supabase.table("batches").select("*").order("created_at", desc=False).execute()
-        data = response.data
+        docs = db.collection("batches").order_by("created_at").stream()
         batches = []
-        for item in data:
+        for doc in docs:
+            item = doc.to_dict()
+            doc_id = doc.id
             try:
                 planted_date = parser.parse(item["planted"])
                 formatted = planted_date.strftime("%d %b %Y")
             except:
                 formatted = "Unknown"
             batches.append({
-                "id": str(item["id"])[:10].upper() if item["id"] else "LOCAL",
+                "id": doc_id[:10].upper(),
                 "crop": item["crop"],
                 "location": item["location"],
                 "planted": formatted,
-                "notes": item["notes"]
+                "notes": item.get("notes", "")
             })
         return {"batches": batches}
     except Exception as e:
