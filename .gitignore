@@ -27,4 +27,4 @@ dist-ssr
 .env
 
 # Ignore Google Cloud Service Account keys
-*.json
+# *.json
