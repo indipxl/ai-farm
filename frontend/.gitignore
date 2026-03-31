@@ -95,4 +95,4 @@ node_modules/
 .dataconnect
 
 # Ignore Google Cloud Service Account keys
-*.json
+# *.json
