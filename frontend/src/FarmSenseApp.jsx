@@ -1223,7 +1223,7 @@ function CropProfilesPage() {
         <div>
           <div className="fs-section-row"><div className="fs-section-label">My Crop Profile</div>
             <div>
-              <button className="fs-btn fs-btn--gold fs-btn--sm">+ New Profile</button>
+              <button className="fs-btn fs-btn--gold fs-btn--sm">+ New Crop</button>
             </div></div>
           <div className="fs-profile-grid" style={{ gridTemplateColumns: "1fr" }}>
             {CROP_PROFILES.map((p, i) => (
@@ -1304,7 +1304,7 @@ function CropProfilesPage() {
             <div className="fs-card">
               <div className="fs-card__body" style={{ textAlign: "center", padding: "48px 24px" }}>
                 <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🌱</div>
-                <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: "1.1rem", marginBottom: 6 }}>Select a profile to edit</div>
+                <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: "1.1rem", marginBottom: 6 }}>Select a crop to edit</div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.6 }}>Click any crop profile on the left to open the recipe editor and customise your target thresholds and alert conditions.</div>
               </div>
             </div>
@@ -1331,7 +1331,7 @@ function CropProfilesPage() {
 
 const NAV_ITEMS = [
   { page: "Dashboard", icon: "🏠", label: "Dashboard", section: "Main" },
-  { page: "Atmosphere", icon: "🌤️", label: "Atmosphere", section: "Monitoring" },
+  // { page: "Atmosphere", icon: "🌤️", label: "Atmosphere", section: "Monitoring" },
   { page: "Soil Health", icon: "🪱", label: "Soil Health", section: "Monitoring" },
   { page: "Disease Map", icon: "🗺️", label: "Disease Map", section: "Monitoring" },
   { page: "Crop Profiles", icon: "🌱", label: "Crop Profiles", section: "Configuration" },
