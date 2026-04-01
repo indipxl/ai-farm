@@ -540,11 +540,18 @@ function DashboardPage() {
   const barCls = { healthy: "fs-batch-card__bar--healthy", warning: "fs-batch-card__bar--warning", danger: "fs-batch-card__bar--danger" };
   const pillCls = { healthy: "fs-pill--healthy", warning: "fs-pill--warning", danger: "fs-pill--danger" };
 
+  const todayDate = new Date().toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
     <>
       <div className="fs-page-header">
         <div>
-          <div className="fs-page-eyebrow">Sunday, 1 March 2026 · Kota Kinabalu</div>
+          <div className="fs-page-eyebrow">{todayDate} · Kota Kinabalu</div>
           <h1 className="fs-page-title">Crop <em>Intelligence</em> Dashboard</h1>
           <p className="fs-page-sub">Monitoring {batches.length} active batches · Last sensor sync 4 min ago</p>
         </div>
