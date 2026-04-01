@@ -243,7 +243,7 @@ body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charco
 .fs-threat-entry__meta{font-family:'DM Mono',monospace;font-size:0.61rem;color:var(--text-dim);margin-top:3px;}
 .fs-time-slider{margin-top:12px;}
 .fs-time-slider label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;margin-bottom:6px;}
-.fs-time-slider input[type=range]{width:100%;-webkit-appearance:none;height:4px;background:var(--cream3);border-radius:2px;outline:none;}
+.fs-time-slider input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:var(--cream3);border-radius:2px;outline:none;}
 .fs-time-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
 .fs-profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:22px;}
 .fs-profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.4s ease both;cursor:pointer;}
@@ -271,7 +271,7 @@ body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charco
 .fs-range-row{display:flex;flex-direction:column;gap:5px;}
 .fs-range-row label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;}
 .fs-range-row label span{color:var(--charcoal);font-weight:500;}
-.fs-range-row input[type=range]{width:100%;-webkit-appearance:none;height:5px;background:var(--cream3);border-radius:3px;outline:none;}
+.fs-range-row input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:5px;background:var(--cream3);border-radius:3px;outline:none;}
 .fs-range-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;background:var(--gold);border-radius:50%;cursor:pointer;}
 .fs-textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:0.82rem;background:var(--cream2);resize:none;outline:none;margin-bottom:16px;color:var(--charcoal);}
 .fs-textarea:focus{border-color:var(--gold);}
