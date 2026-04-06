@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css'
-import LandingPage from "./LandingPage";
-import LoginPage from "./Login";
+import LandingPage from "./pages/LandingPage";
+import LoginPage from "./pages/Login";
 import FarmSenseApp from './FarmSenseApp';
 import ProtectedRoute from './ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/dashboard/*"
+          path="/*"
           element={
             <ProtectedRoute>
               <FarmSenseApp />
