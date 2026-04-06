@@ -1,29 +1,26 @@
-import { useState } from "react";
-
 const MAP_BLOCKS = [
-  { id: "A1", label: "A1", crop: "🍅", status: "danger",  name: "Tomatoes"   }, { id: "A2", label: "A2", crop: "🍅", status: "danger",  name: "Tomatoes"   },
-  { id: "A3", label: "A3", crop: "🥬", status: "warning", name: "Lettuce"    }, { id: "A4", label: "A4", crop: "🥬", status: "healthy", name: "Lettuce"    },
-  { id: "A5", label: "A5", crop: "",   status: "empty",   name: ""           }, { id: "A6", label: "A6", crop: "",   status: "empty",   name: ""           },
-  { id: "B1", label: "B1", crop: "🍅", status: "warning", name: "Tomatoes"   }, { id: "B2", label: "B2", crop: "🫑", status: "healthy", name: "Peppers"    },
-  { id: "B3", label: "B3", crop: "🫑", status: "healthy", name: "Peppers"    }, { id: "B4", label: "B4", crop: "🥒", status: "healthy", name: "Cucumber"   },
-  { id: "B5", label: "B5", crop: "🥒", status: "healthy", name: "Cucumber"   }, { id: "B6", label: "B6", crop: "",   status: "empty",   name: ""           },
+  { id: "A1", label: "A1", crop: "🍅", status: "danger", name: "Tomatoes" }, { id: "A2", label: "A2", crop: "🍅", status: "danger", name: "Tomatoes" },
+  { id: "A3", label: "A3", crop: "🥬", status: "warning", name: "Lettuce" }, { id: "A4", label: "A4", crop: "🥬", status: "healthy", name: "Lettuce" },
+  { id: "A5", label: "A5", crop: "", status: "empty", name: "" }, { id: "A6", label: "A6", crop: "", status: "empty", name: "" },
+  { id: "B1", label: "B1", crop: "🍅", status: "warning", name: "Tomatoes" }, { id: "B2", label: "B2", crop: "🫑", status: "healthy", name: "Peppers" },
+  { id: "B3", label: "B3", crop: "🫑", status: "healthy", name: "Peppers" }, { id: "B4", label: "B4", crop: "🥒", status: "healthy", name: "Cucumber" },
+  { id: "B5", label: "B5", crop: "🥒", status: "healthy", name: "Cucumber" }, { id: "B6", label: "B6", crop: "", status: "empty", name: "" },
   { id: "C1", label: "C1", crop: "🫛", status: "healthy", name: "Long Beans" }, { id: "C2", label: "C2", crop: "🫛", status: "healthy", name: "Long Beans" },
   { id: "C3", label: "C3", crop: "🍓", status: "healthy", name: "Strawberry" }, { id: "C4", label: "C4", crop: "🍓", status: "healthy", name: "Strawberry" },
-  { id: "C5", label: "C5", crop: "🥬", status: "warning", name: "Lettuce"    }, { id: "C6", label: "C6", crop: "",   status: "empty",   name: ""           },
-  { id: "D1", label: "D1", crop: "",   status: "empty",   name: ""           }, { id: "D2", label: "D2", crop: "🫑", status: "healthy", name: "Peppers"    },
-  { id: "D3", label: "D3", crop: "🫑", status: "healthy", name: "Peppers"    }, { id: "D4", label: "D4", crop: "🥒", status: "healthy", name: "Cucumber"   },
-  { id: "D5", label: "D5", crop: "",   status: "empty",   name: ""           }, { id: "D6", label: "D6", crop: "",   status: "empty",   name: ""           },
+  { id: "C5", label: "C5", crop: "🥬", status: "warning", name: "Lettuce" }, { id: "C6", label: "C6", crop: "", status: "empty", name: "" },
+  { id: "D1", label: "D1", crop: "", status: "empty", name: "" }, { id: "D2", label: "D2", crop: "🫑", status: "healthy", name: "Peppers" },
+  { id: "D3", label: "D3", crop: "🫑", status: "healthy", name: "Peppers" }, { id: "D4", label: "D4", crop: "🥒", status: "healthy", name: "Cucumber" },
+  { id: "D5", label: "D5", crop: "", status: "empty", name: "" }, { id: "D6", label: "D6", crop: "", status: "empty", name: "" },
 ];
 
 const THREAT_LOG = [
-  { icon: "🔴", title: "Early Blight spreading from Block A1 → A2",       desc: "Fungal pathogen detected in 2 adjacent blocks. Wind direction NE at 12km/h increases spread risk toward Block B1.", meta: "Detected 2h ago · High risk",      type: "danger"   },
-  { icon: "🟡", title: "Aphid colony movement detected — Block A3 → C5",  desc: "Low-density aphid population migrated across 3 blocks. Natural predator activity noted in Block B area.",          meta: "Detected 6h ago · Moderate risk", type: "warn"     },
-  { icon: "🟡", title: "Temperature stress risk — Blocks A1, A2, B1",     desc: "Sustained high temperature (>33°C) for 3 days creates conditions favourable for pest activity. Monitor closely.",  meta: "Ongoing · Moderate risk",         type: "warn"     },
-  { icon: "🟢", title: "Whitefly threat resolved — Block D2, D3",         desc: "Whitefly population declined after neem oil treatment applied 4 days ago. No further spread detected.",            meta: "Resolved 2 days ago · Low risk",  type: "resolved" },
+  { icon: "🔴", title: "Early Blight spreading from Block A1 → A2", desc: "Fungal pathogen detected in 2 adjacent blocks. Wind direction NE at 12km/h increases spread risk toward Block B1.", meta: "Detected 2h ago · High risk", type: "danger" },
+  { icon: "🟡", title: "Aphid colony movement detected — Block A3 → C5", desc: "Low-density aphid population migrated across 3 blocks. Natural predator activity noted in Block B area.", meta: "Detected 6h ago · Moderate risk", type: "warn" },
+  { icon: "🟡", title: "Temperature stress risk — Blocks A1, A2, B1", desc: "Sustained high temperature (>33°C) for 3 days creates conditions favourable for pest activity. Monitor closely.", meta: "Ongoing · Moderate risk", type: "warn" },
+  { icon: "🟢", title: "Whitefly threat resolved — Block D2, D3", desc: "Whitefly population declined after neem oil treatment applied 4 days ago. No further spread detected.", meta: "Resolved 2 days ago · Low risk", type: "resolved" },
 ];
 
 export default function DiseaseMapPage() {
-  const [timeSlider, setTimeSlider] = useState(100);
   const blockCls = { healthy: "fs-map-block--healthy", warning: "fs-map-block--warning", danger: "fs-map-block--danger", empty: "fs-map-block--empty" };
 
   return (
@@ -75,12 +72,6 @@ export default function DiseaseMapPage() {
                 <div className="fs-map-legend__item"><div className="fs-map-legend__dot" style={{ background: "var(--cream3)" }} />Unplanted</div>
               </div>
             </div>
-            <div style={{ padding: "14px 18px" }}>
-              <div className="fs-time-slider">
-                <label>Timeline <span>{timeSlider}% — {timeSlider === 100 ? "Now (Live)" : `${Math.round((100 - timeSlider) / 10)} days ago`}</span></label>
-                <input type="range" min={0} max={100} value={timeSlider} onChange={e => setTimeSlider(Number(e.target.value))} />
-              </div>
-            </div>
           </div>
 
           {/* Spread prediction */}
@@ -98,10 +89,10 @@ export default function DiseaseMapPage() {
               </div>
               <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {[
-                  { block: "A1", risk: "Critical",  col: "var(--red)"   },
-                  { block: "A2", risk: "Critical",  col: "var(--red)"   },
+                  { block: "A1", risk: "Critical", col: "var(--red)" },
+                  { block: "A2", risk: "Critical", col: "var(--red)" },
                   { block: "B1", risk: "High risk", col: "var(--amber)" },
-                  { block: "A3", risk: "Watch",     col: "var(--amber)" },
+                  { block: "A3", risk: "Watch", col: "var(--amber)" },
                 ].map(r => (
                   <div key={r.block} style={{ background: r.col + "18", border: `1px solid ${r.col}44`, borderRadius: 8, padding: "6px 12px", textAlign: "center" }}>
                     <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: "1rem" }}>{r.block}</div>

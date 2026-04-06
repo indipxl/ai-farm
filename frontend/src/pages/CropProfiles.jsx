@@ -49,7 +49,7 @@ export default function CropProfilesPage() {
         <div>
           <div className="fs-section-row">
             <div className="fs-section-label">My Crop Profile</div>
-            <button className="fs-btn fs-btn--gold fs-btn--sm">+ New Profile</button>
+            <button className="fs-btn fs-btn--gold fs-btn--sm">+ New Crop</button>
           </div>
 
           <div className="fs-profile-grid" style={{ gridTemplateColumns: "1fr" }}>
@@ -77,7 +77,6 @@ export default function CropProfilesPage() {
                           <span className="fs-recipe-param__val">{param.min}–{param.max}{param.unit}</span>
                         </div>
                         <div className="fs-recipe-param__bar">
-                          <div className="fs-recipe-param__fill" style={{ left: `${param.min * 0.7}%`, width: `${(param.max - param.min) * 0.7}%` }} />
                         </div>
                       </div>
                     ))}
@@ -129,7 +128,7 @@ export default function CropProfilesPage() {
                 <textarea className="fs-textarea" rows={3} defaultValue={profile.notes} />
               </div>
               <div style={{ display: "flex", gap: 10 }}>
-                <button className="fs-btn fs-btn--gold" style={{ flex: 1, justifyContent: "center" }}>Save Profile</button>
+                <button className="fs-btn fs-btn--gold" style={{ flex: 1, justifyContent: "center" }}>Edit Profile</button>
                 <button className="fs-btn fs-btn--ghost" onClick={() => setSelected(null)}>Cancel</button>
               </div>
             </div>
