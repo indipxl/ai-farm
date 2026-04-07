@@ -26,11 +26,11 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # batches
-from .services.batches import router as batches_router
+from services.batches import router as batches_router
 app.include_router(batches_router, prefix="/api")
 
 # crops
-from .services.crops import router as crops_router
+from services.crops import router as crops_router
 app.include_router(crops_router, prefix="/api")
 
 if __name__ == "__main__":
