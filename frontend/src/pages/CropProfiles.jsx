@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useCrops } from "../useCrops";
 import { useBatches } from "../useBatches";
 import { useSensors } from "../useSensors";
-import EditCropModal from "../components/EditCropModal";
-import DeleteCropModal from "../components/DeleteCropModal";
+// import EditCropModal from "../components/EditCropModal";
+// import DeleteCropModal from "../components/DeleteCropModal";
 
 export default function CropProfilesPage() {
   const { crops: CROP_PROFILES = [], createCrop, updateCrop, deleteCrop, refetch } = useCrops();
