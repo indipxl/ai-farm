@@ -13,14 +13,14 @@ export default function BatchProfilesPage() {
     const [scanBatch, setScanBatch] = useState(null);
     const [qrBatch, setQrBatch] = useState(null);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
-    const [newBatchForm, setNewBatchForm] = useState({ crop: "", location: "", planted: "", notes: "" });
+    const [newBatchForm, setNewBatchForm] = useState({ crop: "", location: "", notes: "" });
     const [submitting, setSubmitting] = useState(false);
 
     const handleOpenModal = () => setShowRegisterModal(true);
 
     const handleCloseModal = () => {
         setShowRegisterModal(false);
-        setNewBatchForm({ crop: "", location: "", planted: "", notes: "" });
+        setNewBatchForm({ crop: "", location: "", notes: "" });
     };
 
     const handleFormChange = (e) => {
@@ -72,7 +72,7 @@ export default function BatchProfilesPage() {
         <>
             <div className="fs-page-header">
                 <div>
-                    <div className="fs-page-eyebrow">Custom Batch Configurationu</div>
+                    <div className="fs-page-eyebrow">Custom Batch Configuration</div>
                     <h1 className="fs-page-title">Batch <em>Profiles</em></h1>
                     <p className="fs-page-sub">Monitoring {(batches || []).length} active batches</p>
                 </div>
@@ -131,7 +131,7 @@ export default function BatchProfilesPage() {
                             <div>
                                 <div className="fs-batch-card__crop">{b.crop}</div>
                                 <div className="fs-batch-card__loc">📍 {b.location}</div>
-                                <div className="fs-batch-card__id">{b.id} · Planted {b.planted}</div>
+                                <div className="fs-batch-card__id">{b.id} · Planted {b.created_at}</div>
                             </div>
                             <span className={`fs-pill ${pillCls[b.status]}`}>{statusLabel[b.status]}</span>
                         </div>
@@ -188,28 +188,28 @@ export default function BatchProfilesPage() {
                                 </button>
                                 <div style={{ display: 'flex', gap: '6px' }}>
                                     {/* <button
-                    className="fs-btn fs-btn--ghost fs-btn--sm"
-                    onClick={() => {
-                      setEditBatch(b);
-                      setShowEditModal(true);
-                    }}
-                    title="Edit batch"
-                  >
-                    ✏️ Edit
-                  </button>
-                  <button
-                    className="fs-btn fs-btn--danger fs-btn--sm"
-                    onClick={() => {
-                      setDeleteBatchId(b.id);
-                      setShowDeleteModal(true);
-                    }}
-                    title="Delete batch"
-                  >
-                    🗑️ Delete
-                  </button> */}
-                                    <button className="fs-btn-qr" onClick={() => setQrBatch(b)} title="QR Code">
-                                        ▦
+                                        className="fs-btn fs-btn--ghost fs-btn--sm"
+                                        onClick={() => {
+                                            setEditBatch(b);
+                                            setShowEditModal(true);
+                                        }}
+                                        title="Edit batch"
+                                    >
+                                        ✏️ Edit
                                     </button>
+                                    <button
+                                        className="fs-btn fs-btn--danger fs-btn--sm"
+                                        onClick={() => {
+                                            setDeleteBatchId(b.id);
+                                            setShowDeleteModal(true);
+                                        }}
+                                        title="Delete batch"
+                                    >
+                                        🗑️ Delete
+                                    </button> */}
+                                    {/* <button className="fs-btn-qr" onClick={() => setQrBatch(b)} title="QR Code">
+                                        ▦
+                                    </button> */}
                                 </div>
                             </div>
                             <div className="fs-batch-card__last-scan">Last scan: Today 08:42 AM</div>

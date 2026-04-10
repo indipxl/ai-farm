@@ -56,7 +56,8 @@ async def get_batches():
                 'crop': data.get('crop', ''),
                 'location': data.get('location', ''),
                 'planted': planted_str,
-                'notes': data.get('notes', '')
+                'notes': data.get('notes', ''),
+                'created_at': data.get('created_at', '').isoformat() if data.get('created_at') else ''
             })
         return {'batches': batches}
     except Exception as e:
