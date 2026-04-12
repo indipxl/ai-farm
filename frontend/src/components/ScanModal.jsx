@@ -3,6 +3,7 @@ import { useImageAnalysis } from '../useImageAnalysis.js';
 
 export default function ScanModal({ batch, onClose }) {
     const [phase, setPhase] = useState('upload');
+    const [uploadedImage, setUploadedImage] = useState(null);
     const fileRef = useRef();
 
     const {
@@ -18,6 +19,8 @@ export default function ScanModal({ batch, onClose }) {
     const startProcessing = (e) => {
         const file = e.target.files?.[0];
         if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setUploadedImage(imageUrl);
             setPhase('processing');
             uploadAnalyzeImage(file);
         }
@@ -38,9 +41,19 @@ export default function ScanModal({ batch, onClose }) {
         <div className="fs-modal-overlay" onClick={onClose}>
             <div className="fs-modal" onClick={e => e.stopPropagation()}>
                 <div className="fs-camera-view">
-                    <span className="fs-camera-view__bg">📷</span>
                     <div className="fs-scan-frame-wrap">
-                        <div className="fs-scan-frame" />
+                        <div className="fs-scan-frame">
+                            {uploadedImage ? (
+                                <img src={uploadedImage} alt="Uploaded" className="fs-uploaded-image" style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '10px' }} />
+                            ) : (
+                                <>
+                                    <span className="fs-camera-view__bg">📷</span>
+                                    <div className="fs-scan-frame-wrap">
+                                        <div className="fs-scan-frame" />
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className="fs-modal__header">
