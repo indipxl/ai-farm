@@ -3,6 +3,7 @@ import base64
 import json
 import re
 from pydantic import BaseModel
+from typing import Optional
 from firebase_admin import firestore
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -15,7 +16,7 @@ router = APIRouter(prefix="/image", tags=["image"])
 
 # Gemini LLM
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash-lite", # Fixed model name to a known stable one or use user preference
+    model="gemini-2.5-flash-lite",
     api_key=os.getenv("GEMINI_API_KEY")
 )
 
@@ -106,6 +107,7 @@ class ImageAnalysisCreate(BaseModel):
     status: str
     detail: str
     suggestions: list
+    image_base64: Optional[str] = None
 
 db = firestore.client()
 
@@ -119,6 +121,7 @@ async def create_image_analysis(data: ImageAnalysisCreate):
             'status': data.status,
             'detail': data.detail,
             'suggestions': data.suggestions,
+            'image_base64': data.image_base64,
             'timestamp': firestore.SERVER_TIMESTAMP
         })
         return {"success": True, "id": doc_ref[1].id}

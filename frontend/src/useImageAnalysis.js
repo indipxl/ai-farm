@@ -13,6 +13,7 @@ export function useImageAnalysis(batchId) {
     const [isSaving, setIsSaving] = useState(false);
     const [saveError, setSaveError] = useState(null);
     const [currentStep, setCurrentStep] = useState(PROC_STEPS[0]);
+    const [imageBase64, setImageBase64] = useState(null);
 
     const uploadAnalyzeImage = useCallback(async (file) => {
         if (!file) return;
@@ -27,6 +28,11 @@ export function useImageAnalysis(batchId) {
                 setCurrentStep(PROC_STEPS[stepIdx++]);
             }
         }, 1000);
+
+        // Convert to base64 for history storage
+        const reader = new FileReader();
+        reader.onloadend = () => setImageBase64(reader.result);
+        reader.readAsDataURL(file);
 
         try {
             const formData = new FormData();
@@ -85,7 +91,8 @@ export function useImageAnalysis(batchId) {
                     confidence: analysisData.confidence,
                     status: analysisData.status,
                     detail: analysisData.detail,
-                    suggestions: analysisData.suggestions
+                    suggestions: analysisData.suggestions,
+                    image_base64: imageBase64
                 })
             });
 
