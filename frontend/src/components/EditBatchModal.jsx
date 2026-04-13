@@ -38,7 +38,7 @@ export default function EditBatchModal({ batch, onClose, onSubmit }) {
         <div className="fs-modal-overlay" onClick={onClose}>
             <div className="fs-modal" onClick={e => e.stopPropagation()}>
                 <div style={{ padding: '24px', textAlign: 'center' }}>
-                    <h2 style={{ margin: '0 0 8px 0', fontSize: '1.4rem' }}>Edit {batch.id}</h2>
+                    <h2 style={{ margin: '0 0 8px 0', fontSize: '1.4rem' }}>Edit {batch.crop} batch</h2>
                 </div>
                 <form onSubmit={handleSubmit} style={{ padding: '0 24px 24px' }}>
                     <div style={{ display: 'grid', gap: '16px' }}>
