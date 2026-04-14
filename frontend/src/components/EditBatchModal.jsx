@@ -5,7 +5,6 @@ export default function EditBatchModal({ batch, onClose, onSubmit }) {
     const [formData, setFormData] = useState({
         crop: batch?.crop || '',
         location: batch?.location || '',
-        planted: batch?.planted?.split(' ')[0] || '',
         notes: batch?.notes || ''
     });
     const [submitting, setSubmitting] = useState(false);
@@ -43,16 +42,12 @@ export default function EditBatchModal({ batch, onClose, onSubmit }) {
                 <form onSubmit={handleSubmit} style={{ padding: '0 24px 24px' }}>
                     <div style={{ display: 'grid', gap: '16px' }}>
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Crop</label>
+                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Crop Name *</label>
                             <input name="crop" value={formData.crop} onChange={handleChange} className="fs-search-input" />
                         </div>
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Location</label>
+                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Location *</label>
                             <input name="location" value={formData.location} onChange={handleChange} className="fs-search-input" />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Planted</label>
-                            <input type="date" name="planted" value={formData.planted} onChange={handleChange} className="fs-search-input" />
                         </div>
                         <div>
                             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '6px' }}>Notes</label>
