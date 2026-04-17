@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import "../farmsense.css";
 
 export default function BatchProfilesPage() {
-    const { batches, addBatch, updateBatch, deleteBatch, refetch } = useBatches();
+    const { batches, addBatch, updateBatch, deleteBatch, refetch, analyzeBatch } = useBatches();
     const [filter, setFilter] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
     const [scanBatch, setScanBatch] = useState(null);
@@ -26,6 +26,20 @@ export default function BatchProfilesPage() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [deleteBatchId, setDeleteBatchId] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [analyzingBatchId, setAnalyzingBatchId] = useState(null);
+
+    const handleManualAnalysis = async (docId) => {
+        setAnalyzingBatchId(docId);
+        toast.loading("Running AI Analysis...", { id: `analyze-${docId}` });
+        try {
+            await analyzeBatch(docId);
+            toast.success("Analysis Complete!", { id: `analyze-${docId}` });
+        } catch (err) {
+            toast.error("Analysis Failed: " + err.message, { id: `analyze-${docId}` });
+        } finally {
+            setAnalyzingBatchId(null);
+        }
+    };
 
     const handleOpenModal = () => setShowRegisterModal(true);
 
@@ -169,8 +183,12 @@ export default function BatchProfilesPage() {
                         <div className={`fs-batch-card__bar ${barCls[b.status]}`} />
                         <div className="fs-batch-card__header">
                             <div style={{ flex: 1 }}>
-                                <div className="fs-batch-card__crop">{b.crop}</div>
+                                <div className="fs-batch-card__crop" style={{ display: 'flex', alignItems: 'center' }}>
+                                    {b.crop}
+                                    {b.is_custom && <span className="fs-pill" style={{ marginLeft: "8px", background: "var(--gold)", color: "var(--charcoal)", border: "none", fontSize: "0.6rem", padding: "2px 6px" }}>⭐ Custom</span>}
+                                </div>
                                 <div className="fs-batch-card__loc">📍 {b.location}</div>
+                                {b.is_custom && <div style={{ fontSize: "0.75rem", color: "var(--gold)", marginTop: "4px", fontStyle: "italic" }}>🎯 Goal: {b.custom_goal}</div>}
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                     <div className="fs-batch-card__id">{b.id} · Planted on {formatBatchDate(b.created_at)}</div>
                                 </div>
@@ -253,6 +271,13 @@ export default function BatchProfilesPage() {
                                             onClick={() => { setEditBatch(b); setShowEditModal(true); }}
                                         >
                                             ✏️ Edit Batch
+                                        </button>
+                                        <button
+                                            className="fs-dropdown-item"
+                                            onClick={() => handleManualAnalysis(b.doc_id)}
+                                            disabled={analyzingBatchId === b.doc_id}
+                                        >
+                                            {analyzingBatchId === b.doc_id ? '⏳ Analyzing...' : '🤖 Run AI Analysis'}
                                         </button>
                                         <button
                                             className="fs-dropdown-item fs-dropdown-item--danger"

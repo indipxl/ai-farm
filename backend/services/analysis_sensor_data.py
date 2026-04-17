@@ -14,7 +14,7 @@ router = APIRouter(prefix="/soil", tags=["AI Analysis from IoT Sensors"])
 db = firestore.client()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-2.5-flash-lite"
 
 # Automatically generate mappings for BLOCK A1 to D6
 LOCATION_SENSOR_MAP = {
@@ -72,13 +72,32 @@ def get_latest_sensor_data(sensor_collection: str):
         return None
 
 # AI thingy    
-def analyze_soil_with_llm(data, crop_retrieved):
+def analyze_soil_with_llm(data, batch_data):
     """
     Sends raw data to Gemini for classification and recommendations.
     """
 
+    crop_retrieved = batch_data.get('crop', 'Unknown Crop')
+    is_custom = batch_data.get('is_custom', False)
+    custom_goal = batch_data.get('custom_goal', '')
+    custom_targets = batch_data.get('custom_targets', {})
+
     air = data.get('air', {})
     soil = data.get('soil', {})
+
+    custom_instructions = ""
+    if is_custom and custom_goal:
+        custom_instructions = f"""
+    *** IMPORTANT: THIS CROP IS CUSTOMIZED ***
+    The farmer has set a specific custom goal for this crop: "{custom_goal}"
+    The customized target sensor ranges established for this goal are:
+    - Temperature: {custom_targets.get('soilTemperature', 'N/A')}
+    - Moisture: {custom_targets.get('soilMoisture', 'N/A')}
+    - EC: {custom_targets.get('soilEC', 'N/A')}
+    - NPK: {custom_targets.get('soilNPK', 'N/A')}
+    
+    You MUST tailor your recommendations ONLY to achieve this specific goal based on the sensor data. You MUST explicitly warn about the risk of disease and/or pests due to this kind of customization in your RECOMMENDED ACTIONS.
+    """
 
     prompt = f"""
     You are an expert AI Agronomist specializing in Plant Health Management.
@@ -92,6 +111,7 @@ def analyze_soil_with_llm(data, crop_retrieved):
     - Soil EC: {soil.get('ec', 'N/A')} uS/cm
     - NPK (Estimated): N:{soil.get('est_n', 'N/A')}, P:{soil.get('est_p', 'N/A')}, K:{soil.get('est_k', 'N/A')} mg/kg
     - Soil pH: {soil.get('ph', 'N/A')}
+    {custom_instructions}
     
     Using strictly English language, please provide a response in the following format:
     1. THE CROP IS: 
@@ -212,7 +232,7 @@ def process_batch_analysis(batch_data: dict, batch_id: str):
     if not sensor_reading:
         raise ValueError(f"No sensor data found in {sensor_collection}.")
 
-    analysis = analyze_soil_with_llm(sensor_reading, crop_type)
+    analysis = analyze_soil_with_llm(sensor_reading, batch_data)
     
     # Tied the report to the true Firestore document ID
     true_doc_id = batch_data.get('__doc_id', batch_id)

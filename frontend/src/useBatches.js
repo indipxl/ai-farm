@@ -87,5 +87,21 @@ export function useBatches() {
     }
   };
 
-  return { batches, loading, error, refetch: fetchBatches, addBatch, updateBatch, deleteBatch };
+  const analyzeBatch = async (batchId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/soil/analyze/${batchId}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error('Analysis failed: ' + errorText);
+      }
+      const result = await response.json();
+      fetchBatches();
+      return result;
+    } catch (err) {
+      console.error('Analyze batch error:', err);
+      throw err;
+    }
+  };
+
+  return { batches, loading, error, refetch: fetchBatches, addBatch, updateBatch, deleteBatch, analyzeBatch };
 }

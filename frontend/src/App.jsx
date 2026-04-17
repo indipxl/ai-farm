@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import FarmSenseApp from './FarmSenseApp';
 import ProtectedRoute from './ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
+import CropCustomizationPage from "./pages/CropCustomization";
 
 function App() {
   return (

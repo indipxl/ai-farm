@@ -4,6 +4,7 @@ import SoilHealth from "./pages/SoilHealth.jsx";
 import DiseaseMap from "./pages/DiseaseMap.jsx";
 import CropProfiles from "./pages/CropProfiles.jsx";
 import BatchProfiles from "./pages/BatchProfiles.jsx";
+import CropCustomizationPage from "./pages/CropCustomization.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import "./farmsense.css";
 
@@ -20,6 +21,7 @@ export default function FarmSenseApp() {
             <Route path="/disease-map" element={<DiseaseMap />} />
             <Route path="/crop-profiles" element={<CropProfiles />} />
             <Route path="/batch-profiles" element={<BatchProfiles />} />
+            <Route path="/customization" element={<CropCustomizationPage />} />
             <Route path="*" element={<div>Page Not Found</div>} />
           </Routes>
         </div>

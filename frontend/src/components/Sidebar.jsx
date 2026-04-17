@@ -9,6 +9,7 @@ const NAV_ITEMS = [
     { path: "/disease-map", icon: "🗺️", label: "Disease Map", section: "Monitoring" },
     { path: "/batch-profiles", icon: "🌱", label: "Batch Profiles", section: "Configuration" },
     { path: "/crop-profiles", icon: "🌱", label: "Crop Profiles", section: "Configuration" },
+    { path: "/customization", icon: "✨", label: "AI Customization", section: "Configuration" },
 ];
 
 export default function Sidebar() {

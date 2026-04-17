@@ -16,16 +16,26 @@ const MAP_BLOCKS = [
   { id: "D5", label: "D5", crop: "", status: "empty", name: "" }, { id: "D6", label: "D6", crop: "", status: "empty", name: "" },
 ];
 
-const THREAT_LOG = [
-  { icon: "🔴", title: "Early Blight spreading from Block A1 → A2", desc: "Fungal pathogen detected in 2 adjacent blocks. Wind direction NE at 12km/h increases spread risk toward Block B1.", meta: "Detected 2h ago · High risk", type: "danger" },
-  { icon: "🟡", title: "Aphid colony movement detected — Block A3 → C5", desc: "Low-density aphid population migrated across 3 blocks. Natural predator activity noted in Block B area.", meta: "Detected 6h ago · Moderate risk", type: "warn" },
-  { icon: "🟡", title: "Temperature stress risk — Blocks A1, A2, B1", desc: "Sustained high temperature (>33°C) for 3 days creates conditions favourable for pest activity. Monitor closely.", meta: "Ongoing · Moderate risk", type: "warn" },
-  { icon: "🟢", title: "Whitefly threat resolved — Block D2, D3", desc: "Whitefly population declined after neem oil treatment applied 4 days ago. No further spread detected.", meta: "Resolved 2 days ago · Low risk", type: "resolved" },
-];
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export default function DiseaseMapPage() {
   const { batches, loading } = useBatches();
   const [selectedBatch, setSelectedBatch] = useState(null);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanData, setScanData] = useState(null);
+
+  const handleScanFarm = async () => {
+    setIsScanning(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/disease/map-data`);
+      const data = await res.json();
+      setScanData(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsScanning(false);
+    }
+  };
   const blockCls = { healthy: "fs-map-block--healthy", warning: "fs-map-block--warning", danger: "fs-map-block--danger", empty: "fs-map-block--empty" };
 
   const getBatchAt = (locId) => {
@@ -46,17 +56,19 @@ export default function DiseaseMapPage() {
       </div>
 
       <div className="fs-stat-strip">
-        <div className="fs-stat-card fs-stat-card--red"><div className="fs-stat-card__label">Active Threats</div><div className="fs-stat-card__val fs-stat-card__val--danger">2</div><div className="fs-stat-card__meta">Spreading across blocks</div><span className="fs-stat-tag fs-stat-tag--danger">High risk</span></div>
-        <div className="fs-stat-card fs-stat-card--amber"><div className="fs-stat-card__label">Blocks at Risk</div><div className="fs-stat-card__val fs-stat-card__val--warn">4</div><div className="fs-stat-card__meta">Within spread radius</div><span className="fs-stat-tag fs-stat-tag--warn">Monitor</span></div>
-        <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Spread Velocity</div><div className="fs-stat-card__val">1.2</div><div className="fs-stat-card__meta">Blocks/day (Early Blight)</div><span className="fs-stat-tag fs-stat-tag--warn">Increasing</span></div>
-        <div className="fs-stat-card fs-stat-card--green"><div className="fs-stat-card__label">Resolved Threats</div><div className="fs-stat-card__val">1</div><div className="fs-stat-card__meta">Whitefly — Block D</div><span className="fs-stat-tag fs-stat-tag--good">Treated</span></div>
+        <div className="fs-stat-card fs-stat-card--red"><div className="fs-stat-card__label">Active Threats</div><div className="fs-stat-card__val fs-stat-card__val--danger">{scanData ? (scanData.active_threats ? 'Yes' : 'No') : '--'}</div><div className="fs-stat-card__meta">Farm level danger</div><span className="fs-stat-tag fs-stat-tag--danger">Global</span></div>
+        <div className="fs-stat-card fs-stat-card--amber"><div className="fs-stat-card__label">Blocks at Risk</div><div className="fs-stat-card__val fs-stat-card__val--warn">{scanData ? scanData.at_risk_blocks?.length || 0 : '--'}</div><div className="fs-stat-card__meta">Within spread radius</div><span className="fs-stat-tag fs-stat-tag--warn">Monitor</span></div>
+        <div className="fs-stat-card fs-stat-card--gold"><div className="fs-stat-card__label">Total Logs</div><div className="fs-stat-card__val">{scanData ? scanData.threat_log?.length || 0 : '--'}</div><div className="fs-stat-card__meta">AI observations</div></div>
+        <div className="fs-stat-card fs-stat-card--green"><div className="fs-stat-card__label">Preventative Actions</div><div className="fs-stat-card__val">{scanData ? scanData.preventative_actions?.length || 0 : '--'}</div><div className="fs-stat-card__meta">Actionable tips</div></div>
       </div>
 
       <div className="fs-grid-2" style={{ alignItems: "start" }}>
         <div>
           <div className="fs-section-row">
             <div />
-            <button className="fs-btn fs-btn--ghost fs-btn--sm">⬇ Export Map</button>
+            <button className="fs-btn fs-btn--outline fs-btn--sm" onClick={handleScanFarm} disabled={isScanning}>
+              {isScanning ? 'Scanning...' : '🧠 Scan Farm (AI)'}
+            </button>
           </div>
 
           {/* Farm block map */}
@@ -103,27 +115,40 @@ export default function DiseaseMapPage() {
             <div className="fs-card__header">
               <div>
                 <div className="fs-card__title">Spread Prediction</div>
-                <div className="fs-card__sub">AI risk forecast — next 72 hours</div>
+                <div className="fs-card__sub">AI risk forecast — real-time</div>
               </div>
             </div>
             <div className="fs-card__body">
-              <div className="fs-suggestion">
-                <div className="fs-suggestion__label">AI Spread Forecast</div>
-                At current velocity and NE wind direction (12 km/h), Early Blight from Block A1–A2 has a <strong>73% probability</strong> of reaching Block B1 within 48 hours. Immediate fungicide treatment on Blocks A1, A2, and prophylactic spray on B1 strongly recommended.
-              </div>
-              <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {[
-                  { block: "A1", risk: "Danger", col: "var(--red)" },
-                  { block: "A2", risk: "Danger", col: "var(--red)" },
-                  { block: "B1", risk: "High risk", col: "var(--amber)" },
-                  { block: "A3", risk: "Watch", col: "var(--amber)" },
-                ].map(r => (
-                  <div key={r.block} style={{ background: r.col + "18", border: `1px solid ${r.col}44`, borderRadius: 8, padding: "6px 12px", textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: "1rem" }}>{r.block}</div>
-                    <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", color: r.col }}>{r.risk}</div>
+              {scanData ? (
+                <>
+                  <div className="fs-suggestion">
+                    <div className="fs-suggestion__label">AI Spread Forecast</div>
+                    {scanData.spread_prediction}
                   </div>
-                ))}
-              </div>
+                  <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {(scanData.at_risk_blocks || []).map(r => (
+                      <div key={r} style={{ background: "var(--amber)18", border: `1px solid var(--amber)44`, borderRadius: 8, padding: "6px 12px", textAlign: "center" }}>
+                        <div style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: "1rem" }}>{r}</div>
+                        <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", color: "var(--amber)" }}>At Risk</div>
+                      </div>
+                    ))}
+                  </div>
+                  {(scanData.preventative_actions && scanData.preventative_actions.length > 0) && (
+                    <div style={{ marginTop: 16 }}>
+                      <div className="fs-section-label" style={{ marginBottom: 8, fontSize: '0.8rem' }}>Preventative Actions:</div>
+                      <ul style={{ paddingLeft: 20, fontSize: '0.85rem', color: 'var(--text-dim)' }}>
+                        {scanData.preventative_actions.map((act, i) => (
+                          <li key={i} style={{ marginBottom: 4 }}>{act}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '24px', color: 'var(--text-dim)' }}>
+                  Click <strong>Scan Farm</strong> to generate AI prediction.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -133,16 +158,23 @@ export default function DiseaseMapPage() {
           <div className="fs-section-row" style={{ marginTop: 20 }}>
             <div className="fs-section-label">Active Threat Log</div>
           </div>
-          {THREAT_LOG.map((t, i) => (
-            <div key={i} className={`fs-threat-entry${t.type === "danger" ? " fs-threat-entry--danger" : t.type === "warn" ? " fs-threat-entry--warn" : ""}`}>
-              <span className="fs-threat-entry__icon">{t.icon}</span>
-              <div>
-                <div className="fs-threat-entry__title">{t.title}</div>
-                <div className="fs-threat-entry__desc">{t.desc}</div>
-                <div className="fs-threat-entry__meta">{t.meta}</div>
-              </div>
-            </div>
-          ))}
+          {scanData ? (
+            scanData.threat_log && scanData.threat_log.length > 0 ? (
+              scanData.threat_log.map((t, i) => (
+                <div key={i} className={`fs-threat-entry ${scanData.active_threats ? 'fs-threat-entry--danger' : ''}`}>
+                  <span className="fs-threat-entry__icon">{scanData.active_threats ? '🔴' : '🟡'}</span>
+                  <div>
+                    <div className="fs-threat-entry__title">AI Observation</div>
+                    <div className="fs-threat-entry__desc">{t}</div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div style={{ padding: 12, color: 'var(--text-dim)', textAlign: 'center' }}>No active threats detected.</div>
+            )
+          ) : (
+            <div style={{ padding: 12, color: 'var(--text-dim)', textAlign: 'center' }}>Waiting for scan...</div>
+          )}
         </div>
       </div>
       {selectedBatch && (

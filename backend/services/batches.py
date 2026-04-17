@@ -10,6 +10,9 @@ class BatchCreate(BaseModel):
     crop: str
     location: str
     notes: Optional[str] = None
+    is_custom: Optional[bool] = False
+    custom_goal: Optional[str] = None
+    custom_targets: Optional[Dict[str, Any]] = None
 
 class BatchUpdate(BaseModel):
     crop: Optional[str] = None
@@ -34,12 +37,18 @@ async def register_batch(batch: BatchCreate):
         for _ in existing_batches:
             raise HTTPException(status_code=400, detail=f"Location '{batch.location}' is already occupied.")
 
-        doc_ref = db.collection('batches').add({
+        batch_dict = {
             'crop': batch.crop,
             'location': batch.location,
             'notes': batch.notes,
             'created_at': firestore.SERVER_TIMESTAMP
-        })
+        }
+        if batch.is_custom:
+            batch_dict['is_custom'] = True
+            batch_dict['custom_goal'] = batch.custom_goal
+            batch_dict['custom_targets'] = batch.custom_targets
+
+        doc_ref = db.collection('batches').add(batch_dict)
         batch_display_id = doc_ref[1].id[:10].upper()
         db.collection('batches').document(doc_ref[1].id).update({
             'batch_id': batch_display_id
@@ -126,7 +135,10 @@ async def get_batches():
                 'sensor_data': latest_sensor_data,
                 'ai_report': {'analysis': latest_ai_report} if latest_ai_report else None,
                 'image_analysis': image_analysis,
-                'created_at': data.get('created_at', '').isoformat() if data.get('created_at') else ''
+                'created_at': data.get('created_at', '').isoformat() if data.get('created_at') else '',
+                'is_custom': data.get('is_custom', False),
+                'custom_goal': data.get('custom_goal', None),
+                'custom_targets': data.get('custom_targets', None)
             })
         return {'batches': batches}
     except Exception as e:
