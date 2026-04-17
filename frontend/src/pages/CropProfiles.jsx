@@ -209,7 +209,7 @@ export default function CropProfilesPage() {
           {profile ? (
             <div className="fs-recipe-editor">
               <div style={{ background: 'rgba(61,107,58,0.08)', borderRadius: '12px', padding: '16px', marginBottom: '20px', border: '1px solid rgba(61,107,58,0.2)' }}>
-                <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.55rem", color: "var(--green)", marginBottom: 8, textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: '700' }}>AI Farm Prompt Engine</div>
+                <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.55rem", color: "var(--green)", marginBottom: 8, textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: '700' }}>AI Farm Prompt</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <textarea
                     value={prompt}
@@ -298,11 +298,11 @@ export default function CropProfilesPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                   <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", color: "var(--green)", fontWeight: 700 }}>AI PREDICTED OUTCOME</div>
                   <div style={{ fontSize: '0.7rem', fontWeight: 900, color: 'var(--green)' }}>
-                    Grade-A Yield: {prediction?.grade_a ?? '92'}%
+                    Grade-A Yield: {prediction?.grade_a ?? '0'}%
                   </div>
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--charcoal)', lineHeight: 1.4 }}>
-                  {prediction?.reasoning ?? ' No reasoning.'}
+                  {prediction?.reasoning ?? 'No prediction data available.'}
                 </div>
               </div>
 
