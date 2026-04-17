@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List, Dict, Any
 from firebase_admin import firestore
 import dateutil.parser as parser
@@ -31,6 +31,28 @@ class PredictionRequest(BaseModel):
     temp: float
     hum: float
     ph: float
+
+    @field_validator('moisture', 'temp', 'hum', 'ph', mode='before')
+    @classmethod
+    def clean_numeric_fields(cls, v):
+        if isinstance(v, str):
+            # 1. Remove common units and symbols
+            v = re.sub(r'[^\d.-]', '', v.replace('%', '').replace('°C', ''))
+            
+            # 2. Handle ranges (e.g., "60-70")
+            if '-' in v:
+                try:
+                    parts = v.split('-')
+                    return (float(parts[0]) + float(parts[1])) / 2
+                except (ValueError, IndexError):
+                    return 0.0
+            
+            # 3. Return the clean number
+            try:
+                return float(v)
+            except ValueError:
+                return 0.0
+        return v
 
 class CropResponse(BaseModel):
     id: str
