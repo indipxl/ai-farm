@@ -271,7 +271,7 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerwidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -362,7 +362,7 @@ export default function LandingPage() {
           <h2 style={{ ...styles.sectionTitle, color: "#fff" }}>Up and running in 4 steps</h2>
           
           <div style={{ ...styles.stepsGrid,
-            gridTemplateColumns: isMobile ? "1fr" : "1fr",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
             gap: isMobile ? "2rem" : "4rem",
           }}>
             <div style={styles.stepsLeft}>
@@ -400,7 +400,9 @@ export default function LandingPage() {
           <p style={styles.eyebrow}>PRICING</p>
           <h2 style={styles.sectionTitle}>Simple, transparent pricing</h2>
           <p style={styles.sectionSub}>Start free, scale as your farm grows. No hidden fees.</p>
-          <div style={styles.pricingGrid}>
+          <div style={{
+            ...styles.pricingGrid,
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(4, 1fr)", }}>
             {PLANS.map((p) => <PricingCard key={p.name} {...p} />)}
           </div>
         </div>
@@ -587,7 +589,7 @@ const styles = {
   testimonialName: { fontSize: "0.9rem", fontWeight: 700, color: C.textDark, margin: 0 },
   testimonialRole: { fontSize: "0.75rem", color: C.textMuted, fontFamily: "'Segoe UI', sans-serif", margin: 0 },
 
-  pricingGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem", alignItems: "start", width: "100%" },
+  pricingGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.25rem", alignItems: "start", width: "100%" },
   pricingCard: { background: C.cardBg, border: `1px solid ${C.border}`, borderRadius: "16px", padding: "2rem", position: "relative" },
   pricingHighlight: { background: C.sidebarBg, border: `1px solid rgba(200,151,58,0.3)` },
   popularBadge: { position: "absolute", top: "-0.75rem", left: "50%", transform: "translateX(-50%)", background: C.gold, color: C.sidebarBg, fontSize: "0.72rem", fontWeight: 700, borderRadius: "999px", padding: "0.25rem 0.9rem", fontFamily: "'Segoe UI', sans-serif", whiteSpace: "nowrap" },
