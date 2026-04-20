@@ -121,7 +121,7 @@ export default function SoilHealthPage() {
                 </div>
             </div>
 
-            <div className="fs-grid-2" style={{ gridTemplateColumns: '2fr 1fr' }}>
+            <div className="fs-grid-2" style={{ gridTemplateColumns: '1fr' }}>
                 {/* Heatmap Section */}
                 <div className="fs-card">
                     <div className="fs-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
