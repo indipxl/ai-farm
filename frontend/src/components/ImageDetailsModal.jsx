@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AnnotatedImage from './AnnotatedImage';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export default function ImageDetailsModal({ analysis, onClose }) {
     const [dynamicBoxes, setDynamicBoxes] = useState(null);

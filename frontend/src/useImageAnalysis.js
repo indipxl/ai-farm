@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 const PROC_STEPS = ['Extracting visual features...', 'Checking disease patterns...', 'Cross-referencing pest database...', 'Generating recommendations...', 'Finalising analysis...'];
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 export function useImageAnalysis(batchId) {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
