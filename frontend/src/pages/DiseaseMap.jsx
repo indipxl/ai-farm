@@ -299,7 +299,7 @@ export default function DiseaseMapPage() {
       {/* Sensor Modal */}
       {selectedBatch && (
         <div className="fs-modal-overlay" onClick={() => setSelectedBatch(null)} style={{ zIndex: 9999 }}>
-          <div className="fs-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '420px' }}>
+          <div className="fs-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '680px' }}>
             <div style={{ padding: '24px' }}>
               <div className="fs-modal__eyebrow">Sensor Data</div>
               <div className="fs-batch-card__header">
@@ -310,7 +310,8 @@ export default function DiseaseMapPage() {
                 </div>
                 <span className={`fs-pill ${pillCls[selectedBatch.status]}`}>{statusLabel[selectedBatch.status]}</span>
               </div>
-              <div className="fs-sensor-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+
+              <div className="fs-sensor-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                 <div className="fs-sensor-mini">
                   <span className="fs-sensor-mini__icon">🌡️</span>
                   <span className="fs-sensor-mini__name">Temp</span>
@@ -334,7 +335,7 @@ export default function DiseaseMapPage() {
               </div>
 
               {selectedBatch.sensor_data?.soil && (
-                <div style={{ background: 'var(--cream2)', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+                <div style={{ background: 'var(--cream2)', borderRadius: '12px', padding: '16px', marginBottom: '0' }}>
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-dim)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 700 }}>Soil Nutrients (NPK mg/kg)</div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800 }}>
                     <div style={{ color: 'var(--red)' }}>N: {selectedBatch.sensor_data.soil.est_n}</div>
