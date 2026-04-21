@@ -8,3 +8,7 @@ python-dotenv
 langchain-google-genai
 langchain-core
 Pillow
+torch
+torchvision
+ultralytics
+ultralytics-thop

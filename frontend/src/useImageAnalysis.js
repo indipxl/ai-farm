@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 const PROC_STEPS = ['Extracting visual features...', 'Checking disease patterns...', 'Cross-referencing pest database...', 'Generating recommendations...', 'Finalising analysis...'];
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export function useImageAnalysis(batchId) {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -46,6 +46,9 @@ export function useImageAnalysis(batchId) {
         try {
             const formData = new FormData();
             formData.append('file', file);
+            if (batchId) {
+                formData.append('batch_id', batchId);
+            }
 
             const response = await fetch(`${API_BASE_URL}/api/image/upload-image-analysis`, {
                 method: 'POST',
@@ -56,7 +59,7 @@ export function useImageAnalysis(batchId) {
 
             const data = await response.json();
             clearInterval(iv);
-            
+
             setRawAnalysis(data);
             setAnalysisResult({
                 icon: data.status === 'healthy' ? '✅' : (data.status === 'danger' ? '⚠️' : '🔍'),
@@ -101,7 +104,8 @@ export function useImageAnalysis(batchId) {
                     status: analysisData.status,
                     detail: analysisData.detail,
                     suggestions: analysisData.suggestions,
-                    image_base64: imageBase64Ref.current
+                    image_base64: imageBase64Ref.current,
+                    bounding_boxes: analysisData.bounding_boxes || []
                 })
             });
 

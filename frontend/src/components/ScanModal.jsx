@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useImageAnalysis } from '../useImageAnalysis.js';
+import AnnotatedImage from './AnnotatedImage';
 
 export default function ScanModal({ batch, onClose, onSaveSuccess }) {
     const [phase, setPhase] = useState('upload');
@@ -41,22 +42,24 @@ export default function ScanModal({ batch, onClose, onSaveSuccess }) {
     return (
         <div className="fs-modal-overlay" onClick={onClose}>
             <div className="fs-modal" onClick={e => e.stopPropagation()}>
-                <div className="fs-camera-view">
-                    <div className="fs-scan-frame-wrap">
-                        <div className="fs-scan-frame">
-                            {uploadedImage ? (
-                                <img src={uploadedImage} alt="Uploaded" className="fs-uploaded-image" style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '10px' }} />
-                            ) : (
-                                <>
-                                    <span className="fs-camera-view__bg">📷</span>
-                                    <div className="fs-scan-frame-wrap">
-                                        <div className="fs-scan-frame" />
-                                    </div>
-                                </>
-                            )}
+                {(!result || phase === 'upload') && (
+                    <div className="fs-camera-view">
+                        <div className="fs-scan-frame-wrap">
+                            <div className="fs-scan-frame">
+                                {uploadedImage ? (
+                                    <img src={uploadedImage} alt="Uploaded" className="fs-uploaded-image" style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '10px' }} />
+                                ) : (
+                                    <>
+                                        <span className="fs-camera-view__bg">📷</span>
+                                        <div className="fs-scan-frame-wrap">
+                                            <div className="fs-scan-frame" />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
                 <div className="fs-modal__header">
                     <div className="fs-modal__eyebrow">AI Camera Vision</div>
                     <div className="fs-modal__title">
@@ -95,7 +98,10 @@ export default function ScanModal({ batch, onClose, onSaveSuccess }) {
                     )}
                     {result && (
                         <>
-                            <div style={{ display: 'flex', gap: '11px', justifyContent: 'center', marginBottom: '14px' }}>
+                            <div style={{ position: 'relative' }}>
+                                <AnnotatedImage src={uploadedImage} boxes={rawAnalysis?.bounding_boxes || []} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '11px', justifyContent: 'center', marginBottom: '14px', marginTop: '14px' }}>
                                 <span style={{ fontSize: '1.9rem' }}>{result.icon}</span>
                                 <div>
                                     <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{result.title}</div>
