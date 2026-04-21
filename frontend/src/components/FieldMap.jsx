@@ -89,99 +89,97 @@ export default function FieldMap({ batches, editMode = false }) {
 
     return (
         <>
-            <div className="fs-grid-2">
-                <div className="fs-card" style={{ marginBottom: '28px' }}>
-                    <div className="fs-card__header">
-                        <div>
-                            <div className="fs-card__title">Farm Field Map</div>
-                            <div className="fs-card__sub">{editMode ? "Interactive layout editor. Click + to add blocks." : "Live physical mapping of active batches."}</div>
-                        </div>
+            <div className="fs-card" style={{ marginBottom: '28px' }}>
+                <div className="fs-card__header">
+                    <div>
+                        <div className="fs-card__title">Farm Field Map</div>
+                        <div className="fs-card__sub">{editMode ? "Interactive layout editor. Click + to add blocks." : "Live physical mapping of active batches."}</div>
                     </div>
-                    <div className="fs-card__body">
-                        <div className="fs-farm-map" style={{ overflowX: 'auto' }}>
-                            {blocks.length === 0 ? (
-                                <div style={{ padding: '2rem', textAlign: 'center' }}>
-                                    <p>No blocks configured.</p>
-                                    {editMode && (
-                                        <button
-                                            onClick={() => handleAddBlock(0, 0)}
-                                            style={{ padding: '0.5rem 1rem', background: 'var(--charcoal)', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}>
-                                            + Add First Block (A1)
-                                        </button>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="fs-map-grid" style={{
-                                    gridTemplateColumns: `repeat(${gridCols}, minmax(80px, 1fr))`,
-                                    gridTemplateRows: `repeat(${gridRows}, minmax(80px, 1fr))`
-                                }}>
-                                    {rows.map(r => (
-                                        cols.map(c => {
-                                            const block = blocks.find(b => b.row === r && b.col === c);
+                </div>
+                <div className="fs-card__body">
+                    <div className="fs-farm-map" style={{ overflowX: 'auto' }}>
+                        {blocks.length === 0 ? (
+                            <div style={{ padding: '2rem', textAlign: 'center' }}>
+                                <p>No blocks configured.</p>
+                                {editMode && (
+                                    <button
+                                        onClick={() => handleAddBlock(0, 0)}
+                                        style={{ padding: '0.5rem 1rem', background: 'var(--charcoal)', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}>
+                                        + Add First Block (A1)
+                                    </button>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="fs-map-grid" style={{
+                                gridTemplateColumns: `repeat(${gridCols}, minmax(80px, 1fr))`,
+                                gridTemplateRows: `repeat(${gridRows}, minmax(80px, 1fr))`
+                            }}>
+                                {rows.map(r => (
+                                    cols.map(c => {
+                                        const block = blocks.find(b => b.row === r && b.col === c);
 
-                                            if (block) {
-                                                const batch = getBatchForLocation(block.label);
-                                                if (batch) {
-                                                    let statusClass = 'fs-map-block--healthy';
-                                                    if (batch.status === 'danger') statusClass = 'fs-map-block--danger';
-                                                    else if (batch.status === 'warning') statusClass = 'fs-map-block--warning';
+                                        if (block) {
+                                            const batch = getBatchForLocation(block.label);
+                                            if (batch) {
+                                                let statusClass = 'fs-map-block--healthy';
+                                                if (batch.status === 'danger') statusClass = 'fs-map-block--danger';
+                                                else if (batch.status === 'warning') statusClass = 'fs-map-block--warning';
 
-                                                    return (
-                                                        <div
-                                                            key={`${r}-${c}`}
-                                                            className={`fs-map-block ${statusClass} fs-map-block--active`}
-                                                            title={`Active: ${batch.crop}`}
-                                                            onClick={() => !editMode && setSelectedBatch(batch)}
-                                                            style={{ cursor: editMode ? 'default' : 'pointer', position: 'relative' }}
-                                                        >
-                                                            <div className="fs-map-block__label" style={{ color: statusColors[batch.status] || 'var(--charcoal)' }}>{block.label}</div>
-                                                            <div className="fs-map-block__crop" style={{ filter: batch.status === 'danger' ? 'hue-rotate(-50deg)' : 'none' }}>
-                                                                {batch.crop.toLowerCase().includes('chilli') ? '🌶️' : '🌿'}
-                                                            </div>
-                                                            <div className="fs-map-block__status" style={{ textAlign: 'center', fontWeight: '900', color: statusColors[batch.status] || 'var(--charcoal)' }}>
-                                                                {batch.crop.charAt(0).toUpperCase() + batch.crop.slice(1)}
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <div key={`${r}-${c}`} className="fs-map-block fs-map-block--empty" title={`Empty Plot`} style={{ position: 'relative' }}>
-                                                            {editMode && (
-                                                                <button
-                                                                    onClick={(e) => handleDeleteBlock(block, e)}
-                                                                    style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', fontSize: '2.5rem', zIndex: 10 }}
-                                                                    title="Delete Block"
-                                                                >
-                                                                    &times;
-                                                                </button>
-                                                            )}
-                                                            <div className="fs-map-block__label" style={{ opacity: 0.6 }}>{block.label}</div>
-                                                            <div className="fs-map-block__crop" style={{ opacity: 0.2 }}>-</div>
-                                                        </div>
-                                                    );
-                                                }
-                                            } else if (editMode && isAdjacent(r, c)) {
-                                                // Render an add button
                                                 return (
                                                     <div
                                                         key={`${r}-${c}`}
-                                                        className="fs-map-block fs-map-block--empty"
-                                                        onClick={() => handleAddBlock(r, c)}
-                                                        style={{ cursor: 'pointer', border: '2px dashed var(--border)', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                                        title="Add Block"
+                                                        className={`fs-map-block ${statusClass} fs-map-block--active`}
+                                                        title={`Active: ${batch.crop}`}
+                                                        onClick={() => !editMode && setSelectedBatch(batch)}
+                                                        style={{ cursor: editMode ? 'default' : 'pointer', position: 'relative' }}
                                                     >
-                                                        <span style={{ fontSize: '2rem', color: 'var(--border)', fontWeight: 300 }}>+</span>
+                                                        <div className="fs-map-block__label" style={{ color: statusColors[batch.status] || 'var(--charcoal)' }}>{block.label}</div>
+                                                        <div className="fs-map-block__crop" style={{ filter: batch.status === 'danger' ? 'hue-rotate(-50deg)' : 'none' }}>
+                                                            {batch.crop.toLowerCase().includes('chilli') ? '🌶️' : '🌿'}
+                                                        </div>
+                                                        <div className="fs-map-block__status" style={{ textAlign: 'center', fontWeight: '900', color: statusColors[batch.status] || 'var(--charcoal)' }}>
+                                                            {batch.crop.charAt(0).toUpperCase() + batch.crop.slice(1)}
+                                                        </div>
                                                     </div>
                                                 );
                                             } else {
-                                                // Render empty spacer
-                                                return <div key={`${r}-${c}`} />;
+                                                return (
+                                                    <div key={`${r}-${c}`} className="fs-map-block fs-map-block--empty" title={`Empty Plot`} style={{ position: 'relative' }}>
+                                                        {editMode && (
+                                                            <button
+                                                                onClick={(e) => handleDeleteBlock(block, e)}
+                                                                style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', fontSize: '2.5rem', zIndex: 10 }}
+                                                                title="Delete Block"
+                                                            >
+                                                                &times;
+                                                            </button>
+                                                        )}
+                                                        <div className="fs-map-block__label" style={{ opacity: 0.6 }}>{block.label}</div>
+                                                        <div className="fs-map-block__crop" style={{ opacity: 0.2 }}>-</div>
+                                                    </div>
+                                                );
                                             }
-                                        })
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                        } else if (editMode && isAdjacent(r, c)) {
+                                            // Render an add button
+                                            return (
+                                                <div
+                                                    key={`${r}-${c}`}
+                                                    className="fs-map-block fs-map-block--empty"
+                                                    onClick={() => handleAddBlock(r, c)}
+                                                    style={{ cursor: 'pointer', border: '2px dashed var(--border)', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                    title="Add Block"
+                                                >
+                                                    <span style={{ fontSize: '2rem', color: 'var(--border)', fontWeight: 300 }}>+</span>
+                                                </div>
+                                            );
+                                        } else {
+                                            // Render empty spacer
+                                            return <div key={`${r}-${c}`} />;
+                                        }
+                                    })
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ export default function BatchProfilesPage() {
     const [selectedAnalysis, setSelectedAnalysis] = useState(null);
     const [analyzingBatchId, setAnalyzingBatchId] = useState(null);
     const [analyzingAll, setAnalyzingAll] = useState(false);
+    const [expandedAIReports, setExpandedAIReports] = useState([]);
 
     // Edit and Delete states
     const [editBatch, setEditBatch] = useState(null);
@@ -291,18 +292,38 @@ export default function BatchProfilesPage() {
                                     )}
                                 </div>
                             </div>
-                            <div className="fs-suggestion">
-                                <div className="fs-suggestion__label">AI Recommendation</div>
-                                {b.ai_report?.analysis ?? 'No analysis available.'}
+                            <div
+                                className="fs-suggestion"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => {
+                                    const currentIndex = expandedAIReports.indexOf(b.id);
+                                    if (currentIndex > -1) {
+                                        setExpandedAIReports(expandedAIReports.filter(id => id !== b.id));
+                                    } else {
+                                        setExpandedAIReports([...expandedAIReports, b.id]);
+                                    }
+                                }}
+                            >
+                                <div className="fs-suggestion__label">
+                                    AI Recommendation
+                                    <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>
+                                        {expandedAIReports.includes(b.id) ? '▼' : '▶'}
+                                    </span>
+                                </div>
+                                {expandedAIReports.includes(b.id) && (
+                                    <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--border)', fontSize: '0.85rem', lineHeight: '1.4' }}>
+                                        {b.ai_report?.analysis ?? 'No analysis available.'}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="fs-batch-actions">
                                 <button className="fs-btn-scan" onClick={() => setScanBatch(b)} style={{ width: '100%' }}>
-                                    <span className="fs-btn-scan__dot">◉</span>Scan with Camera
+                                    <span className="fs-btn-scan__dot">◉</span>Upload Image
                                 </button>
-                                <button className="fs-btn-qr" onClick={() => setQrBatch(b)} title="QR Code">
+                                {/* <button className="fs-btn-qr" onClick={() => setQrBatch(b)} title="QR Code">
                                     ▦
-                                </button>
+                                </button> */}
                                 <div className="fs-card-dropdown">
                                     <button className="fs-icon-btn">⋮</button>
                                     <div className="fs-dropdown-menu">

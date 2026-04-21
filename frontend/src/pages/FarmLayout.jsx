@@ -184,7 +184,7 @@ export default function FarmLayout() {
               )}
             </div>
 
-            <div className="fs-grid-2">
+            <div style={{ marginTop: '3rem' }}>
               <FieldMap batches={[]} editMode={true} />
             </div>
 
