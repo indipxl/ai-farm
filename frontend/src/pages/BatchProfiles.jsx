@@ -255,9 +255,9 @@ export default function BatchProfilesPage() {
                             <div style={{ background: 'var(--cream2)', borderRadius: '8px', padding: '12px', marginTop: '8px', marginBottom: '12px' }}>
                                 <div style={{ fontSize: '0.65rem', color: 'var(--text-dim)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 700 }}>Est. Soil Nutrients (mg/kg)</div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: '0.85rem' }}>
-                                    <div style={{ color: 'var(--red)' }}>N: {b.sensor_data?.soil?.est_n ?? '--'}</div>
-                                    <div style={{ color: 'var(--gold)' }}>P: {b.sensor_data?.soil?.est_p ?? '--'}</div>
-                                    <div style={{ color: 'var(--green)' }}>K: {b.sensor_data?.soil?.est_k ?? '--'}</div>
+                                    <div style={{ color: 'var(--red)' }}>N: {b.sensor_data?.soil?.est_n != null ? Number(b.sensor_data.soil.est_n).toFixed(1) : '--'}</div>
+                                    <div style={{ color: 'var(--gold)' }}>P: {b.sensor_data?.soil?.est_p != null ? Number(b.sensor_data.soil.est_p).toFixed(1) : '--'}</div>
+                                    <div style={{ color: 'var(--green)' }}>K: {b.sensor_data?.soil?.est_k != null ? Number(b.sensor_data.soil.est_k).toFixed(1) : '--'}</div>
                                 </div>
                             </div>
                             <div
