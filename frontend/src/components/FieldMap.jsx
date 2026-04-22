@@ -103,7 +103,11 @@ export default function FieldMap({ batches, editMode = false }) {
                                 <p>No blocks configured.</p>
                                 {editMode && (
                                     <button
-                                        onClick={() => handleAddBlock(0, 0)}
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleAddBlock(0, 0);
+                                        }}
                                         style={{ padding: '0.5rem 1rem', background: 'var(--charcoal)', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}>
                                         + Add First Block (A1)
                                     </button>
@@ -147,7 +151,11 @@ export default function FieldMap({ batches, editMode = false }) {
                                                     <div key={`${r}-${c}`} className="fs-map-block fs-map-block--empty" title={`Empty Plot`} style={{ position: 'relative' }}>
                                                         {editMode && (
                                                             <button
-                                                                onClick={(e) => handleDeleteBlock(block, e)}
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleDeleteBlock(block, e);
+                                                                }}
                                                                 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', fontSize: '2.5rem', zIndex: 10 }}
                                                                 title="Delete Block"
                                                             >
