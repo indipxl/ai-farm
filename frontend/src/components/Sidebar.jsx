@@ -11,8 +11,8 @@ import SoilMonitorLogo from "./logo/SoilMonitorLogo.png";
 import { useFarmSettings } from "../useFarmSettings";
 
 const NAV_ITEMS = [
-    { path: "/farm-layout", icon: FarmLayoutLogo, label: "Farm Layout" },// section: "Main" },
     { path: "/dashboard", icon: DashboardLogo, label: "Dashboard" },// section: "Main" },
+    { path: "/farm-layout", icon: FarmLayoutLogo, label: "Farm Layout" },// section: "Main" },
     { path: "/batch-profiles", icon: BatchLogo, label: "Batch Profiles" }, //section: "Configuration" },
     // { path: "/crop-profiles", icon: "🌱", label: "Crop Profiles", section: "Configuration" },
     { path: "/disease-map", icon: DiseaseMapLogo, label: "Disease Map" }, //section: "Monitoring" },
